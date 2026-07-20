@@ -159,7 +159,36 @@ analysis_summary 和 dashboard.core_conclusion.one_sentence
 
 报告的首要目标是减少信息遗漏和识别需要进一步研究的事项，而不是预测下一交易日涨跌。
 """
+TECHNICAL_SKILL_RULES_EN = """## Fact-First Technical Context Baseline
 
+Technical indicators are secondary descriptive context, not independent
+buy, sell, position-sizing, target-price, or stop-loss signals.
+
+- The total technical-analysis weight must not exceed 20%.
+- MA5, MA10, MA20, RSI, MACD, and volume may only describe short-term
+  price behavior, volatility, and market positioning.
+- Do not recommend buying solely because of bullish moving-average alignment.
+- Do not recommend selling solely because of bearish moving-average alignment.
+- Do not generate an entry because price touches MA5 or MA10.
+- Do not generate a mechanical stop-loss because price falls below MA20.
+- Do not recommend bottom-fishing solely because RSI is oversold.
+- Avoid absolute language such as "must buy", "must sell", "never buy",
+  or "liquidate immediately".
+
+If quote status is fallback, missing, or stale, or technical status is
+partial, missing, or fetch_failed:
+
+- Treat technical conclusions as unreliable.
+- Do not provide precise entry prices, exit prices, target prices,
+  stop-loss prices, or position percentages.
+- Explicitly state that the available market data is insufficient.
+- Default to monitoring rather than issuing a trading instruction.
+
+Before interpreting price movement, verify that current price,
+previous close, price change, and percentage change are mathematically
+consistent. If they are inconsistent, identify the contradiction and
+do not use the affected fields for decision-making.
+"""
 
 def get_default_trading_skill_policy(*, explicit_skill_selection: bool) -> str:
     """Return the legacy default trading baseline only for implicit/default runs.
